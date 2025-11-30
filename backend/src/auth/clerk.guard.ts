@@ -1,0 +1,21 @@
+import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
+import { AuthService } from './auth.service';
+
+type InternalRequest = {
+  headers: Record<string, string | string[] | undefined>;
+  auth?: unknown;
+};
+
+@Injectable()
+export class ClerkAuthGuard implements CanActivate {
+  constructor(private readonly authService: AuthService) {}
+
+  async canActivate(context: ExecutionContext): Promise<boolean> {
+    const request = context.switchToHttp().getRequest<InternalRequest>();
+    const authorization = request.headers['authorization'] as string | undefined;
+    const authPayload = await this.authService.verifyAuthorizationHeader(authorization);
+    request.auth = authPayload;
+    return true;
+  }
+}
+

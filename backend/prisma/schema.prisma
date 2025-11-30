@@ -1,0 +1,66 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum RiskLevel {
+  low
+  medium
+  high
+}
+
+enum SignalStrength {
+  medium
+  high
+}
+
+enum AlertStatus {
+  pending
+  sent
+}
+
+enum Plan {
+  free
+  basic
+  pro
+  whale
+}
+
+model Token {
+  id              String    @id @default(cuid())
+  address         String    @unique
+  name            String
+  symbol          String
+  chain           String
+  liquidityUsd    Float
+  volumeUsd24h    Float
+  holderCount     Int
+  score           Float
+  riskLevel       RiskLevel
+  alerts          Alert[]
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+}
+
+model Alert {
+  id              String          @id @default(cuid())
+  tokenId         String
+  token           Token           @relation(fields: [tokenId], references: [id])
+  score           Float
+  signalStrength  SignalStrength
+  status          AlertStatus     @default(pending)
+  deliveryTargets String[]
+  createdAt       DateTime        @default(now())
+}
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  plan      Plan
+  createdAt DateTime @default(now())
+}
+

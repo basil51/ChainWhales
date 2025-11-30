@@ -1,0 +1,30 @@
+declare const _default: (() => {
+    port: number;
+    nodeEnv: string;
+    corsOrigin: string;
+    databaseUrl: string;
+    redisUrl: string;
+    bitqueryApiKey: string;
+    clerkSecretKey: string;
+    stripeSecretKey: string;
+    stripePriceBasic: string;
+    stripePricePro: string;
+    stripePriceWhale: string;
+    stripeSuccessUrl: string;
+    stripeCancelUrl: string;
+}) & import("@nestjs/config").ConfigFactoryKeyHost<{
+    port: number;
+    nodeEnv: string;
+    corsOrigin: string;
+    databaseUrl: string;
+    redisUrl: string;
+    bitqueryApiKey: string;
+    clerkSecretKey: string;
+    stripeSecretKey: string;
+    stripePriceBasic: string;
+    stripePricePro: string;
+    stripePriceWhale: string;
+    stripeSuccessUrl: string;
+    stripeCancelUrl: string;
+}>;
+export default _default;

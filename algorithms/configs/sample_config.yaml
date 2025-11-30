@@ -1,0 +1,15 @@
+chain: solana
+lookback_minutes: 30
+thresholds:
+  min_liquidity_usd: 50000
+  min_holder_count: 100
+  max_liquidity_drop_pct: 50
+  min_score: 70
+weights:
+  whale_volume: 0.3
+  holder_growth: 0.25
+  liquidity_change: 0.2
+  momentum: 0.15
+  contract_safety: 0.1
+batch_size: 50
+
