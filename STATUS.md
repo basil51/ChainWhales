@@ -7,6 +7,9 @@
 - **✅ Development environment fully operational:** All services (backend, frontend, Python engine) start without errors via `pnpm dev`.
 
 ## Recently Completed
+- **✅ Verified End-to-End Pipeline:** Confirmed real-time signals flow from BitQuery -> Python Engine -> NestJS Backend -> WebSockets -> Next.js Dashboard.
+- **✅ Fixed Algorithm Logic:** Updated `BitQueryClient` to correctly aggregate trades into token snapshots and respect query limits.
+- **✅ Tuned Detection:** Adjusted dev/test configuration thresholds to ensure signals are generated for testing purposes.
 - Provisioned Dockerized Postgres (`chainwhales-postgres`, mapped to host port `5434`) and ran Prisma migrations + seeds.
 - Added Prisma-backed services for tokens, alerts, and users (no more in-memory mocks).
 - Created internal API client contract (`src/services/python-client.ts`) so the Python engine can POST signals directly.
@@ -23,8 +26,8 @@
 
 ## In Progress / Next
 1. **Stripe catalog:** create price IDs for Basic/Pro/Whale (`STRIPE_PRICE_BASIC/PRO/WHALE`) and validate checkout/webhook flows.
-2. **Frontend + auth:** complete Clerk-protected routes, live alert feeds, and subscription management UI.
-3. **Python engine setup:** install Python dependencies (`pip install -e .` in `algorithms/`) to enable live BitQuery queries.
+2. **Subscriptions wiring:** sync Stripe subscriptions into the backend `User.plan` field and expose current plan to the frontend.
+3. **Frontend + auth:** show real plan status and limits in `/app` and `/app/subscription` (pricing UI and real-time alerts are already implemented).
 4. **Monitoring:** add queue workers, health endpoints, and logging/metrics once the above pieces are live.
 
 ## Tracking

@@ -251,9 +251,9 @@ Add Telegram bot for alerts.
 | Plan      | Price | Features                                               |
 | --------- | ----- | ------------------------------------------------------ |
 | **Free**  | $0    | 5 alerts/day, 15-min delay                             |
-| **Basic** | $39   | Real-time alerts, 1 chain                              |
-| **Pro**   | $149  | All chains, unlimited alerts, Telegram bot, API access |
-| **Whale** | $799  | Priority scanning, custom filters, fund-level tools    |
+| **Basic** | $29   | Real-time alerts, 1 chain                              |
+| **Pro**   | $59  | All chains, unlimited alerts, Telegram bot, API access |
+| **Whale** | $99  | Priority scanning, custom filters, fund-level tools    |
 
 Add a 7‑day free trial on Basic → Higher conversion.
 
@@ -305,9 +305,9 @@ Solution: Backtesting page + accuracy statistics
 
 | Scenario    | Users | MRR      |
 | ----------- | ----- | -------- |
-| Pessimistic | 50    | ~$2,500  |
-| Realistic   | 150   | ~$8,000  |
-| Optimistic  | 500   | ~$40,000 |
+| Pessimistic | 50    | ~$1,200  |
+| Realistic   | 150   | ~$4,500  |
+| Optimistic  | 500   | ~$16,500 |
 
 ---
 
@@ -349,12 +349,19 @@ Just tell me which step you want next.
 * ✅ **Prisma migrations & seed data:** Local Postgres seeded with baseline user/token/alert, confirming real responses from `/tokens` and `/alerts`.
 * ✅ **Ops + secrets configured:** Root `.env` stores `BITQUERY_API_KEY` (sourced by dev script), `backend/.env` has `DATABASE_URL`, `CLERK_SECRET_KEY`, `STRIPE_SECRET_KEY`, `STRIPE_WEBHOOK_SECRET`, and docker-compose keeps Postgres running on `5434`.
 * ✅ **Development environment operational:** All services start cleanly via `pnpm dev`:
-  - Backend (NestJS) on `http://localhost:4000` ✅
+  - Backend (Nest`JS) on `http://localhost:4000` ✅
   - Frontend (Next.js) on `http://localhost:3000` ✅
   - Python engine configured with `PYTHONPATH` and environment variable sourcing ✅
   - Clerk authentication working with proper middleware placement ✅
   - Next.js 16 compatibility issues resolved ✅
+  - Real-time alerts wired from Python → backend → WebSocket → dashboard ✅
+  - Pricing page (`/app/subscription`) shows Free / Basic / Pro / Whale tiers ✅
+* ✅ **End-to-End Pipeline Verified:** 
+  - Validated real data flow: BitQuery (Python) → Backend (NestJS) → Frontend (WebSockets).
+  - Fixed BitQuery client aggregation logic and signal generation.
+  - Confirmed alerts appear instantly on the dashboard (`/app`).
 * 🔄 **Next actions:** 
-  1. Install Python dependencies (`cd algorithms && pip install -e .`) to enable live BitQuery queries
-  2. Finalize Stripe price IDs (`STRIPE_PRICE_BASIC/PRO/WHALE`) and test checkout flows
-  3. Complete frontend dashboard with real-time alert feeds and subscription management
+  1. Finalize Stripe price IDs (`STRIPE_PRICE_BASIC/PRO/WHALE`) and test checkout flows
+  2. Sync user plan in backend (Prisma `User.plan`) with Stripe subscriptions and Clerk users
+  3. Show real plan status and limits in `/app` and `/app/subscription`
+  4. (Optional) Enforce plan-based limits (e.g., Free = 5 alerts/day, 15-min delay)
