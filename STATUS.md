@@ -10,13 +10,13 @@
 - Added Prisma-backed services for tokens, alerts, and users (no more in-memory mocks).
 - Created internal API client contract (`src/services/python-client.ts`) so the Python engine can POST signals directly.
 - Scaffolded Clerk auth + Stripe billing modules and exposed `/billing/checkout`.
+- Local `.env` now includes `DATABASE_URL`, `CLERK_SECRET_KEY`, `STRIPE_SECRET_KEY`, `STRIPE_WEBHOOK_SECRET`, and docker-compose keeps Postgres alive on `5434`.
 
 ## In Progress / Next
-1. **Environment config:** create a local `.env` that includes `DATABASE_URL`, `CLERK_SECRET_KEY`, `STRIPE_SECRET_KEY`, and price IDs (`STRIPE_PRICE_BASIC`, `STRIPE_PRICE_PRO`, `STRIPE_PRICE_WHALE`). _(File creation is blocked in this workspace, so add it manually.)_
-2. **Database uptime:** keep the `chainwhales-postgres` container running or codify it via docker-compose so port `5434` always hosts Postgres.
-3. **Python integration:** wire the accumulation engine to the new internal endpoints using `src/services/python-client.ts` as the contract.
-4. **Credentials rollout:** provision real Clerk + Stripe keys to unlock authentication and subscription flows.
-5. **Monitoring:** once env secrets exist, add health checks/metrics + queue workers.
+1. **Python integration:** run the accumulation engine with `InternalApiSink` / `src/services/python-client.ts` so fresh alerts flow continuously into `/tokens` + `/alerts`.
+2. **Stripe catalog:** create price IDs for Basic/Pro/Whale (`STRIPE_PRICE_BASIC/PRO/WHALE`) and validate checkout/webhook flows.
+3. **Frontend + auth:** start wiring the Next.js dashboard with Clerk-protected routes, live alert feeds, and subscription management.
+4. **Monitoring:** add queue workers, health endpoints, and logging/metrics once the above pieces are live.
 
 ## Tracking
 - Roadmap section **12. Current Status** now reflects this progress and pending actions.

@@ -347,4 +347,5 @@ Just tell me which step you want next.
 * ✅ **Phase 1 Weeks 1–2 complete:** NestJS backend, Prisma/PostgreSQL (port `5434`), Redis-ready queue layer, and API endpoints for tokens, alerts, and users are running.
 * ✅ **Internal ingestion endpoints live:** `/internal/tokens` and `/internal/alerts` accept validated payloads and persist to the database for the Python worker.
 * ✅ **Prisma migrations & seed data:** Local Postgres seeded with baseline user/token/alert, confirming real responses from `/tokens` and `/alerts`.
-* 🔄 **Next actions:** create a local `.env` with `DATABASE_URL`, `CLERK_*`, and `STRIPE_*` keys, keep the Postgres container running (or add to docker-compose), wire the Python engine to the new internal endpoints, and supply real Clerk & Stripe credentials for auth/billing launch.
+* ✅ **Ops + secrets configured:** `.env` now stores `DATABASE_URL`, `CLERK_SECRET_KEY`, `STRIPE_SECRET_KEY`, `STRIPE_WEBHOOK_SECRET`, and docker-compose keeps Postgres running on `5434`.
+* 🔄 **Next actions:** run the Python engine with the new Internal API sink to stream alerts continuously, finalize Stripe price IDs (`STRIPE_PRICE_BASIC/PRO/WHALE`), expose Clerk-protected routes on the frontend, and begin wiring the Next.js dashboard.

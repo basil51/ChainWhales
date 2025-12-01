@@ -3,13 +3,18 @@
 from __future__ import annotations
 
 from datetime import datetime, timezone
-from typing import Sequence
+from typing import Protocol, Sequence
 
 from .config import EngineConfig
 from .data_sources import BitQueryClient
 from .filters import apply_filters
-from .models import AlertSignal, ScoreBreakdown, TokenSnapshot
+from .models import AlertSignal
 from .scoring import score_token
+
+
+class AlertSink(Protocol):
+    def handle_alert(self, alert: AlertSignal) -> None:
+        ...
 
 
 class AccumulationEngine:
@@ -17,9 +22,11 @@ class AccumulationEngine:
         self,
         config: EngineConfig,
         data_source: BitQueryClient,
+        sinks: Sequence[AlertSink] | None = None,
     ) -> None:
         self._config = config
         self._data_source = data_source
+        self._sinks = list(sinks or [])
 
     def run_once(self) -> Sequence[AlertSignal]:
         snapshots = self._data_source.fetch_recent_snapshots(
@@ -42,5 +49,10 @@ class AccumulationEngine:
                     triggered_at=datetime.now(tz=timezone.utc),
                 )
             )
+            self._dispatch(alerts[-1])
         return alerts
+
+    def _dispatch(self, alert: AlertSignal) -> None:
+        for sink in self._sinks:
+            sink.handle_alert(alert)
 

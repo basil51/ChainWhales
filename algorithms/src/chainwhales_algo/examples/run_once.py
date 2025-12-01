@@ -12,6 +12,7 @@ import yaml
 from ..config import DataSourceConfig, EngineConfig, Thresholds, WeightConfig
 from ..data_sources import BitQueryClient
 from ..engine import AccumulationEngine
+from ..sinks.internal_api import InternalApiSink
 
 
 def load_config(path: str | None) -> EngineConfig:
@@ -48,6 +49,12 @@ def load_config(path: str | None) -> EngineConfig:
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--config", help="Path to YAML config", default=None)
+    parser.add_argument(
+        "--push-url",
+        help="Optional base URL for the NestJS internal API. "
+        "Falls back to INTERNAL_API_BASE_URL env var.",
+        default=None,
+    )
     args = parser.parse_args()
 
     engine_cfg = load_config(args.config)
@@ -56,19 +63,29 @@ def main() -> None:
     )
     client = BitQueryClient(data_cfg)
 
-    engine = AccumulationEngine(engine_cfg, client)
-    alerts = engine.run_once()
-    if not alerts:
-        print("No alerts generated.")
-        return
-    for alert in alerts:
-        token = alert.token
-        print(
-            f"{token.symbol} ({token.address}) "
-            f"score={alert.score:.2f} "
-            f"liquidity=${token.liquidity_usd:,.0f} "
-            f"holders={token.holder_count}"
-        )
+    sinks: list[InternalApiSink] = []
+    base_url = args.push_url or os.environ.get("INTERNAL_API_BASE_URL")
+    if base_url:
+        sinks.append(InternalApiSink(base_url=base_url))
+
+    try:
+        engine = AccumulationEngine(engine_cfg, client, sinks=sinks)
+        alerts = engine.run_once()
+        if not alerts:
+            print("No alerts generated.")
+            return
+        for alert in alerts:
+            token = alert.token
+            print(
+                f"{token.symbol} ({token.address}) "
+                f"score={alert.score:.2f} "
+                f"liquidity=${token.liquidity_usd:,.0f} "
+                f"holders={token.holder_count}"
+            )
+    finally:
+        for sink in sinks:
+            sink.close()
+        client.close()
 
 
 if __name__ == "__main__":
