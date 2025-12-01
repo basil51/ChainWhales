@@ -341,11 +341,20 @@ Just tell me which step you want next.
 
 ---
 
-# **12. Current Status (Nov 30, 2025)**
+# **12. Current Status (Dec 1, 2025)**
 
 * ✅ **Phase 0 prototype prepared:** Python accumulation engine scaffolded with BitQuery client, filters, and scoring (ready for data wiring).
 * ✅ **Phase 1 Weeks 1–2 complete:** NestJS backend, Prisma/PostgreSQL (port `5434`), Redis-ready queue layer, and API endpoints for tokens, alerts, and users are running.
-* ✅ **Internal ingestion endpoints live:** `/internal/tokens` and `/internal/alerts` accept validated payloads and persist to the database for the Python worker.
+* ✅ **Internal ingestion endpoints live:** `/internal/tokens` and `/internal/alerts` accept validated payloads and persist to the database for the Python worker, and a continuous Python loop can now stream alerts into them.
 * ✅ **Prisma migrations & seed data:** Local Postgres seeded with baseline user/token/alert, confirming real responses from `/tokens` and `/alerts`.
-* ✅ **Ops + secrets configured:** `.env` now stores `DATABASE_URL`, `CLERK_SECRET_KEY`, `STRIPE_SECRET_KEY`, `STRIPE_WEBHOOK_SECRET`, and docker-compose keeps Postgres running on `5434`.
-* 🔄 **Next actions:** run the Python engine with the new Internal API sink to stream alerts continuously, finalize Stripe price IDs (`STRIPE_PRICE_BASIC/PRO/WHALE`), expose Clerk-protected routes on the frontend, and begin wiring the Next.js dashboard.
+* ✅ **Ops + secrets configured:** Root `.env` stores `BITQUERY_API_KEY` (sourced by dev script), `backend/.env` has `DATABASE_URL`, `CLERK_SECRET_KEY`, `STRIPE_SECRET_KEY`, `STRIPE_WEBHOOK_SECRET`, and docker-compose keeps Postgres running on `5434`.
+* ✅ **Development environment operational:** All services start cleanly via `pnpm dev`:
+  - Backend (NestJS) on `http://localhost:4000` ✅
+  - Frontend (Next.js) on `http://localhost:3000` ✅
+  - Python engine configured with `PYTHONPATH` and environment variable sourcing ✅
+  - Clerk authentication working with proper middleware placement ✅
+  - Next.js 16 compatibility issues resolved ✅
+* 🔄 **Next actions:** 
+  1. Install Python dependencies (`cd algorithms && pip install -e .`) to enable live BitQuery queries
+  2. Finalize Stripe price IDs (`STRIPE_PRICE_BASIC/PRO/WHALE`) and test checkout flows
+  3. Complete frontend dashboard with real-time alert feeds and subscription management
