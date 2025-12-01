@@ -24,3 +24,13 @@ cd algorithms
 BITQUERY_API_KEY=... INTERNAL_API_BASE_URL=http://localhost:4000 \
   python -m chainwhales_algo.examples.run_once --config configs/sample_config.yaml
 ```
+
+## Frontend (Next.js dashboard)
+
+```bash
+cd frontend
+pnpm install
+pnpm dev  # open http://localhost:3000
+```
+
+Set `NEXT_PUBLIC_API_URL` if the backend lives on a different host/port.

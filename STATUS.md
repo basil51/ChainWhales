@@ -11,6 +11,7 @@
 - Created internal API client contract (`src/services/python-client.ts`) so the Python engine can POST signals directly.
 - Scaffolded Clerk auth + Stripe billing modules and exposed `/billing/checkout`.
 - Local `.env` now includes `DATABASE_URL`, `CLERK_SECRET_KEY`, `STRIPE_SECRET_KEY`, `STRIPE_WEBHOOK_SECRET`, and docker-compose keeps Postgres alive on `5434`.
+- Bootstrapped a Next.js + Tailwind dashboard (`frontend/`) that consumes `/tokens` and `/alerts`.
 
 ## In Progress / Next
 1. **Python integration:** run the accumulation engine with `InternalApiSink` / `src/services/python-client.ts` so fresh alerts flow continuously into `/tokens` + `/alerts`.
