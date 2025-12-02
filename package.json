@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "description": "Monorepo for ChainWhales backend and frontend",
   "scripts": {
-    "dev": "concurrently -n backend,frontend,python -c blue,green,yellow \"pnpm -C backend start:dev\" \"pnpm -C frontend dev\" \"sh -c '. .env 2>/dev/null || true; cd algorithms && PYTHONPATH=./src python3 -m chainwhales_algo.examples.run_loop --config configs/sample_config.yaml --interval-seconds 600'\"",
+    "dev": "concurrently -n backend,frontend,python -c blue,green,yellow \"pnpm -C backend start:dev\" \"pnpm -C frontend dev\" \"sh -c 'ROOT_DIR=\\$(pwd); set -a; [ -f \\$ROOT_DIR/.env ] && . \\$ROOT_DIR/.env; set +a; cd \\$ROOT_DIR/algorithms && PYTHONPATH=./src python3 -m chainwhales_algo.examples.run_loop --config configs/sample_config.yaml --interval-seconds 600'\"",
     "dev:no-python": "concurrently -n backend,frontend -c blue,green \"pnpm -C backend start:dev\" \"pnpm -C frontend dev\""
   },
   "devDependencies": {

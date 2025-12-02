@@ -39,7 +39,7 @@ export function AlertFeed({ alerts, tokens }: AlertFeedProps) {
                 {token?.name ?? "Unknown Token"}
               </h3>
               <p className="text-sm text-zinc-500">
-                Score {alert.score.toFixed(1)} ·{" "}
+                Score {alert.score.toFixed(0)} ·{" "}
                 {token?.chain?.toUpperCase() ?? "n/a"}
               </p>
             </div>

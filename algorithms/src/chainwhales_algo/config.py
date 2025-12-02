@@ -45,9 +45,12 @@ class WeightConfig:
 
 @dataclass(frozen=True)
 class DataSourceConfig:
-    api_url: str = "https://graphql.bitquery.io"
+    # BitQuery v2 GraphQL endpoint (OAuth tokens as per docs)
+    # See: https://docs.bitquery.io/docs/authorisation/how-to-generate/
+    api_url: str = "https://streaming.bitquery.io/graphql"
     api_key: str | None = None
-    timeout_seconds: float = 15.0
+    # BitQuery can be slow, especially on Solana; use a generous default timeout.
+    timeout_seconds: float = 60.0
     retries: int = 3
     backoff_seconds: float = 2.0
 

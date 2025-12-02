@@ -20,7 +20,7 @@ export class BillingService {
     const secretKey = this.configService.get<string>('app.stripeSecretKey');
     if (secretKey) {
       this.stripe = new Stripe(secretKey, {
-        apiVersion: '2024-10-28.acacia', // Use a valid recent version or 'latest' if possible, but strict typing requires exact match
+        apiVersion: '2025-11-17.clover', // Match the exact version required by the installed Stripe SDK types
       });
     }
     this.priceLookup = {

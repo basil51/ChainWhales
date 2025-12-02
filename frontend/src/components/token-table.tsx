@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { Token } from "@/lib/types";
 
 interface TokenTableProps {
@@ -29,15 +30,20 @@ export function TokenTable({ tokens }: TokenTableProps) {
         </thead>
         <tbody className="divide-y divide-zinc-100 bg-white">
           {tokens.map((token) => (
-            <tr key={token.id} className="text-zinc-800">
+            <tr key={token.id} className="text-zinc-800 hover:bg-zinc-50">
               <td className="px-4 py-3">
-                <div className="font-medium">{token.name}</div>
+                <Link
+                  href={`/app/tokens/${token.id}`}
+                  className="font-medium text-rose-600 hover:underline"
+                >
+                  {token.name}
+                </Link>
                 <div className="text-xs uppercase text-zinc-500">
                   {token.symbol}
                 </div>
               </td>
               <td className="px-4 py-3 capitalize">{token.chain}</td>
-              <td className="px-4 py-3 font-semibold">{token.score}</td>
+              <td className="px-4 py-3 font-semibold">{token.score.toFixed(0)}</td>
               <td className="px-4 py-3 capitalize">{token.riskLevel}</td>
               <td className="px-4 py-3">
                 ${token.liquidityUsd.toLocaleString()}

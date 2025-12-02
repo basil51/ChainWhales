@@ -14,7 +14,7 @@ import argparse
 import os
 import sys
 import time
-from datetime import datetime
+from datetime import UTC, datetime
 
 from ..config import DataSourceConfig
 from ..data_sources import BitQueryClient
@@ -47,8 +47,10 @@ def main() -> None:
     args = parse_args()
 
     engine_cfg = load_config(args.config)
+    timeout = float(os.environ.get("BITQUERY_TIMEOUT_SECONDS", "60"))
     data_cfg = DataSourceConfig(
         api_key=os.environ.get("BITQUERY_API_KEY"),
+        timeout_seconds=timeout,
     )
     if not data_cfg.api_key:
         print("ERROR: BITQUERY_API_KEY is not set in the environment.", file=sys.stderr)
@@ -65,13 +67,14 @@ def main() -> None:
     engine = AccumulationEngine(engine_cfg, client, sinks=[sink])
 
     try:
+        start_ts = datetime.now(UTC).isoformat()
         print(
-            f"[{datetime.utcnow().isoformat()}] "
+            f"[{start_ts}] "
             f"Starting accumulation loop: interval={args.interval_seconds}s, "
             f"backend={base_url}, chain={engine_cfg.chain}"
         )
         while True:
-            started_at = datetime.utcnow()
+            started_at = datetime.now(UTC)
             try:
                 alerts = engine.run_once()
                 count = len(alerts)

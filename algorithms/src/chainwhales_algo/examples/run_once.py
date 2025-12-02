@@ -58,8 +58,10 @@ def main() -> None:
     args = parser.parse_args()
 
     engine_cfg = load_config(args.config)
+    timeout = float(os.environ.get("BITQUERY_TIMEOUT_SECONDS", "60"))
     data_cfg = DataSourceConfig(
         api_key=os.environ.get("BITQUERY_API_KEY"),
+        timeout_seconds=timeout,
     )
     client = BitQueryClient(data_cfg)
 

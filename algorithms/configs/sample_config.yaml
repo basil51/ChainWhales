@@ -1,10 +1,10 @@
 chain: solana
 lookback_minutes: 10
 thresholds:
-  min_liquidity_usd: 100
-  min_holder_count: 1
+  min_liquidity_usd: 100000
+  min_holder_count: 5
   max_liquidity_drop_pct: 50
-  min_score: 1                                                              
+  min_score: 40
 weights:
   whale_volume: 0.3
   holder_growth: 0.25

@@ -21,3 +21,7 @@ export function getAlerts(): Promise<Alert[]> {
   return fetchJson<Alert[]>("/alerts");
 }
 
+export function getToken(id: string): Promise<Token> {
+  return fetchJson<Token>(`/tokens/${id}`);
+}
+

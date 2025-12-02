@@ -345,6 +345,7 @@ Just tell me which step you want next.
 
 * ✅ **Phase 0 prototype prepared:** Python accumulation engine scaffolded with BitQuery client, filters, and scoring (ready for data wiring).
 * ✅ **Phase 1 Weeks 1–2 complete:** NestJS backend, Prisma/PostgreSQL (port `5434`), Redis-ready queue layer, and API endpoints for tokens, alerts, and users are running.
+* ✅ **Phase 1 Weeks 5–6 (Frontend Dashboard) functionally complete:** Next.js dashboard now shows real-time alerts from the live pipeline and is ready for private beta users.
 * ✅ **Internal ingestion endpoints live:** `/internal/tokens` and `/internal/alerts` accept validated payloads and persist to the database for the Python worker, and a continuous Python loop can now stream alerts into them.
 * ✅ **Prisma migrations & seed data:** Local Postgres seeded with baseline user/token/alert, confirming real responses from `/tokens` and `/alerts`.
 * ✅ **Ops + secrets configured:** Root `.env` stores `BITQUERY_API_KEY` (sourced by dev script), `backend/.env` has `DATABASE_URL`, `CLERK_SECRET_KEY`, `STRIPE_SECRET_KEY`, `STRIPE_WEBHOOK_SECRET`, and docker-compose keeps Postgres running on `5434`.
@@ -354,7 +355,7 @@ Just tell me which step you want next.
   - Python engine configured with `PYTHONPATH` and environment variable sourcing ✅
   - Clerk authentication working with proper middleware placement ✅
   - Next.js 16 compatibility issues resolved ✅
-  - Real-time alerts wired from Python → backend → WebSocket → dashboard ✅
+  - Real-time alerts wired from Python → backend → WebSocket → dashboard ✅ (alerts dashboard manually tested with new signals)
   - Pricing page (`/app/subscription`) shows Free / Basic / Pro / Whale tiers ✅
 * ✅ **End-to-End Pipeline Verified:** 
   - Validated real data flow: BitQuery (Python) → Backend (NestJS) → Frontend (WebSockets).

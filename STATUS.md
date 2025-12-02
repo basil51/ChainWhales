@@ -10,6 +10,7 @@
 - **✅ Verified End-to-End Pipeline:** Confirmed real-time signals flow from BitQuery -> Python Engine -> NestJS Backend -> WebSockets -> Next.js Dashboard.
 - **✅ Fixed Algorithm Logic:** Updated `BitQueryClient` to correctly aggregate trades into token snapshots and respect query limits.
 - **✅ Tuned Detection:** Adjusted dev/test configuration thresholds to ensure signals are generated for testing purposes.
+- **✅ Alerts Dashboard Finalized:** `/app` now shows new alerts in real time, auto-updates via WebSockets, and has been manually tested with live signals.
 - Provisioned Dockerized Postgres (`chainwhales-postgres`, mapped to host port `5434`) and ran Prisma migrations + seeds.
 - Added Prisma-backed services for tokens, alerts, and users (no more in-memory mocks).
 - Created internal API client contract (`src/services/python-client.ts`) so the Python engine can POST signals directly.

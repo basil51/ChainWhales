@@ -13,9 +13,10 @@ def _normalize(value: float, max_value: float) -> float:
 
 
 def score_token(token: TokenSnapshot, weights: WeightConfig) -> ScoreBreakdown:
+    # Lowered thresholds for MVP/Testing sensitivity
     whale_volume_component = _normalize(
         sum(tx.volume_usd for tx in token.whale_transactions),
-        max_value=500_000,
+        max_value=50_000,  # Was 500,000
     ) * weights.whale_volume * 100
     holder_growth_component = _normalize(
         token.holder_growth_pct,
@@ -27,7 +28,7 @@ def score_token(token: TokenSnapshot, weights: WeightConfig) -> ScoreBreakdown:
     ) * weights.liquidity_change * 100
     momentum_component = _normalize(
         token.volume_usd_24h,
-        max_value=1_000_000,
+        max_value=100_000,  # Was 1,000,000
     ) * weights.momentum * 100
     safety_component = token.contract_safety_score * weights.contract_safety * 100
     return ScoreBreakdown(
