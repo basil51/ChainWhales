@@ -9,6 +9,9 @@ export declare class UsersController {
         email: string;
         plan: import("@prisma/client").$Enums.Plan;
     }, never, import("@prisma/client/runtime/library").DefaultArgs>;
+    getStatus(email: string): Promise<{
+        plan: string;
+    }>;
     findOne(id: string): import("@prisma/client").Prisma.Prisma__UserClient<{
         id: string;
         createdAt: Date;

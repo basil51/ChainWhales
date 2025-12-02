@@ -12,6 +12,7 @@ const alerts_controller_1 = require("./alerts.controller");
 const alerts_service_1 = require("./alerts.service");
 const tokens_module_1 = require("../tokens/tokens.module");
 const internal_alerts_controller_1 = require("./internal-alerts.controller");
+const alerts_gateway_1 = require("./alerts.gateway");
 let AlertsModule = class AlertsModule {
 };
 exports.AlertsModule = AlertsModule;
@@ -19,7 +20,8 @@ exports.AlertsModule = AlertsModule = __decorate([
     (0, common_1.Module)({
         imports: [tokens_module_1.TokensModule],
         controllers: [alerts_controller_1.AlertsController, internal_alerts_controller_1.InternalAlertsController],
-        providers: [alerts_service_1.AlertsService],
+        providers: [alerts_service_1.AlertsService, alerts_gateway_1.AlertsGateway],
+        exports: [alerts_gateway_1.AlertsGateway],
     })
 ], AlertsModule);
 //# sourceMappingURL=alerts.module.js.map

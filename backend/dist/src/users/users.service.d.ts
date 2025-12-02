@@ -15,4 +15,10 @@ export declare class UsersService {
         email: string;
         plan: import("@prisma/client").$Enums.Plan;
     } | null, null, import("@prisma/client/runtime/library").DefaultArgs>;
+    findByEmail(email: string): import("@prisma/client").Prisma.Prisma__UserClient<{
+        id: string;
+        createdAt: Date;
+        email: string;
+        plan: import("@prisma/client").$Enums.Plan;
+    } | null, null, import("@prisma/client/runtime/library").DefaultArgs>;
 }

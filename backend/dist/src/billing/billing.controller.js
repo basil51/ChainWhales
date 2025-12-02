@@ -24,6 +24,16 @@ let BillingController = class BillingController {
     createCheckout(dto) {
         return this.billingService.createCheckoutSession(dto.plan, dto.customerEmail);
     }
+    async handleWebhook(signature, req) {
+        if (!signature) {
+            throw new common_1.BadRequestException('Missing stripe-signature header');
+        }
+        if (!req.rawBody) {
+            throw new common_1.BadRequestException('Invalid payload');
+        }
+        await this.billingService.handleWebhook(signature, req.rawBody);
+        return { received: true };
+    }
 };
 exports.BillingController = BillingController;
 __decorate([
@@ -33,6 +43,14 @@ __decorate([
     __metadata("design:paramtypes", [create_checkout_session_dto_1.CreateCheckoutSessionDto]),
     __metadata("design:returntype", void 0)
 ], BillingController.prototype, "createCheckout", null);
+__decorate([
+    (0, common_1.Post)('webhook'),
+    __param(0, (0, common_1.Headers)('stripe-signature')),
+    __param(1, (0, common_1.Req)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, Object]),
+    __metadata("design:returntype", Promise)
+], BillingController.prototype, "handleWebhook", null);
 exports.BillingController = BillingController = __decorate([
     (0, common_1.Controller)('billing'),
     __metadata("design:paramtypes", [billing_service_1.BillingService])

@@ -16,6 +16,7 @@ const health_module_1 = require("./health/health.module");
 const tokens_module_1 = require("./tokens/tokens.module");
 const alerts_module_1 = require("./alerts/alerts.module");
 const users_module_1 = require("./users/users.module");
+const sell_orders_module_1 = require("./sell-orders/sell-orders.module");
 const app_config_1 = __importDefault(require("./common/config/app.config"));
 const prisma_module_1 = require("./prisma/prisma.module");
 const auth_module_1 = require("./auth/auth.module");
@@ -38,6 +39,7 @@ exports.AppModule = AppModule = __decorate([
             tokens_module_1.TokensModule,
             alerts_module_1.AlertsModule,
             users_module_1.UsersModule,
+            sell_orders_module_1.SellOrdersModule,
         ],
     })
 ], AppModule);

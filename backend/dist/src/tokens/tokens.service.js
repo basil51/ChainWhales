@@ -35,7 +35,23 @@ let TokensService = class TokensService {
             take: 200,
         });
     }
-    create(dto) {
+    async create(dto) {
+        const existing = await this.prisma.token.findUnique({
+            where: { address: dto.address },
+        });
+        if (existing) {
+            const shouldUpdateScore = dto.score > 0;
+            return this.prisma.token.update({
+                where: { id: existing.id },
+                data: {
+                    liquidityUsd: dto.liquidityUsd,
+                    volumeUsd24h: dto.volumeUsd24h,
+                    holderCount: dto.holderCount,
+                    riskLevel: dto.riskLevel,
+                    ...(shouldUpdateScore ? { score: dto.score } : {}),
+                },
+            });
+        }
         return this.prisma.token.create({
             data: {
                 address: dto.address,

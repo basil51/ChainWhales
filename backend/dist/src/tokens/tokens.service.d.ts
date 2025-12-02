@@ -18,7 +18,7 @@ export declare class TokensService {
         createdAt: Date;
         updatedAt: Date;
     }[]>;
-    create(dto: CreateTokenDto): import("@prisma/client").Prisma.Prisma__TokenClient<{
+    create(dto: CreateTokenDto): Promise<{
         symbol: string;
         chain: string;
         riskLevel: import("@prisma/client").$Enums.RiskLevel;
@@ -31,7 +31,7 @@ export declare class TokensService {
         id: string;
         createdAt: Date;
         updatedAt: Date;
-    }, never, import("@prisma/client/runtime/library").DefaultArgs>;
+    }>;
     findOne(id: string): import("@prisma/client").Prisma.Prisma__TokenClient<{
         symbol: string;
         chain: string;

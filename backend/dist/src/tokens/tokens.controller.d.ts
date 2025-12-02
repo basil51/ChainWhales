@@ -32,7 +32,7 @@ export declare class TokensController {
         createdAt: Date;
         updatedAt: Date;
     } | null, null, import("@prisma/client/runtime/library").DefaultArgs>;
-    create(dto: CreateTokenDto): import("@prisma/client").Prisma.Prisma__TokenClient<{
+    create(dto: CreateTokenDto): Promise<{
         symbol: string;
         chain: string;
         riskLevel: import("@prisma/client").$Enums.RiskLevel;
@@ -45,5 +45,5 @@ export declare class TokensController {
         id: string;
         createdAt: Date;
         updatedAt: Date;
-    }, never, import("@prisma/client/runtime/library").DefaultArgs>;
+    }>;
 }

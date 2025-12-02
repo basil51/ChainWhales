@@ -30,6 +30,11 @@ let UsersService = class UsersService {
             where: { id },
         });
     }
+    findByEmail(email) {
+        return this.prisma.user.findUnique({
+            where: { email },
+        });
+    }
 };
 exports.UsersService = UsersService;
 exports.UsersService = UsersService = __decorate([

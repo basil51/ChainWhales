@@ -13,17 +13,23 @@ exports.AlertsService = void 0;
 const common_1 = require("@nestjs/common");
 const prisma_service_1 = require("../prisma/prisma.service");
 const tokens_service_1 = require("../tokens/tokens.service");
+const alerts_gateway_1 = require("./alerts.gateway");
 let AlertsService = class AlertsService {
     prisma;
     tokensService;
-    constructor(prisma, tokensService) {
+    alertsGateway;
+    constructor(prisma, tokensService, alertsGateway) {
         this.prisma = prisma;
         this.tokensService = tokensService;
+        this.alertsGateway = alertsGateway;
     }
     findAll() {
         return this.prisma.alert.findMany({
             orderBy: { createdAt: 'desc' },
             take: 200,
+            include: {
+                token: true,
+            },
         });
     }
     async create(dto) {
@@ -31,20 +37,26 @@ let AlertsService = class AlertsService {
         if (!token) {
             throw new common_1.NotFoundException(`Token ${dto.tokenId} not found`);
         }
-        return this.prisma.alert.create({
+        const alert = await this.prisma.alert.create({
             data: {
                 tokenId: token.id,
                 score: dto.score,
                 signalStrength: dto.signalStrength,
                 deliveryTargets: dto.deliveryTargets,
             },
+            include: {
+                token: true,
+            },
         });
+        this.alertsGateway.emitNewAlert(alert);
+        return alert;
     }
 };
 exports.AlertsService = AlertsService;
 exports.AlertsService = AlertsService = __decorate([
     (0, common_1.Injectable)(),
     __metadata("design:paramtypes", [prisma_service_1.PrismaService,
-        tokens_service_1.TokensService])
+        tokens_service_1.TokensService,
+        alerts_gateway_1.AlertsGateway])
 ], AlertsService);
 //# sourceMappingURL=alerts.service.js.map

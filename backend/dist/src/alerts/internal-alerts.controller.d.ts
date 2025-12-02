@@ -4,6 +4,21 @@ export declare class InternalAlertsController {
     private readonly alertsService;
     constructor(alertsService: AlertsService);
     create(dto: CreateAlertDto): Promise<{
+        token: {
+            symbol: string;
+            chain: string;
+            riskLevel: import("@prisma/client").$Enums.RiskLevel;
+            address: string;
+            name: string;
+            liquidityUsd: number;
+            volumeUsd24h: number;
+            holderCount: number;
+            score: number;
+            id: string;
+            createdAt: Date;
+            updatedAt: Date;
+        };
+    } & {
         score: number;
         id: string;
         createdAt: Date;

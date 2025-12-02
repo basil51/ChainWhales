@@ -30,6 +30,18 @@ enum Plan {
   whale
 }
 
+enum OrderStatus {
+  active
+  inactive
+  executed
+  canceled
+}
+
+enum OrderType {
+  market
+  limit
+}
+
 model Token {
   id              String    @id @default(cuid())
   address         String    @unique
@@ -42,6 +54,8 @@ model Token {
   score           Float
   riskLevel       RiskLevel
   alerts          Alert[]
+  sellOrders      SellOrder[]
+  limitOrders     LimitOrder[]
   createdAt       DateTime  @default(now())
   updatedAt       DateTime  @updatedAt
 }
@@ -55,6 +69,50 @@ model Alert {
   status          AlertStatus     @default(pending)
   deliveryTargets String[]
   createdAt       DateTime        @default(now())
+}
+
+// Market sell orders - actual sells that happened at market price
+model SellOrder {
+  id              String      @id @default(cuid())
+  tokenId         String
+  token           Token       @relation(fields: [tokenId], references: [id])
+  wallet          String      // Wallet address that sold
+  txHash          String      // Transaction hash
+  volumeUsd       Float       // USD value of the sell
+  tokenAmount     Float       // Amount of tokens sold
+  priceUsd        Float       // Price per token at time of sell
+  liquidityUsd    Float?      // Liquidity at time of sell
+  poolAddress     String?     // Pool address
+  source          String?     // bitquery / dexscreener / birdeye
+  orderType       OrderType   @default(market)
+  status          OrderStatus @default(executed) // Market sells are always executed
+  createdAt       DateTime    @default(now())
+  
+  @@index([tokenId])
+  @@index([createdAt])
+}
+
+// Limit sell orders - pending orders at a future price
+model LimitOrder {
+  id              String      @id @default(cuid())
+  tokenId         String
+  token           Token       @relation(fields: [tokenId], references: [id])
+  wallet          String      // Wallet address that placed the order
+  orderId         String?     // DEX-specific order ID (if available)
+  targetPriceUsd  Float       // Target price for the limit order
+  tokenAmount     Float       // Amount of tokens to sell
+  amountUsd       Float?      // Estimated USD value
+  source          String?     // openbook / jupiter / helius
+  orderType       OrderType   @default(limit)
+  status          OrderStatus @default(active) // active, inactive (canceled/deleted), or executed
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
+  filledAt        DateTime?
+  canceledAt      DateTime?
+
+  @@index([tokenId])
+  @@index([status])
+  @@index([wallet])
 }
 
 model User {

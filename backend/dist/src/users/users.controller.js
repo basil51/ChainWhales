@@ -24,6 +24,12 @@ let UsersController = class UsersController {
     create(dto) {
         return this.usersService.create(dto);
     }
+    async getStatus(email) {
+        if (!email)
+            return { plan: 'free' };
+        const user = await this.usersService.findByEmail(email);
+        return { plan: user?.plan ?? 'free' };
+    }
     findOne(id) {
         return this.usersService.findOne(id);
     }
@@ -36,6 +42,13 @@ __decorate([
     __metadata("design:paramtypes", [create_user_dto_1.CreateUserDto]),
     __metadata("design:returntype", void 0)
 ], UsersController.prototype, "create", null);
+__decorate([
+    (0, common_1.Get)('status'),
+    __param(0, (0, common_1.Query)('email')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", Promise)
+], UsersController.prototype, "getStatus", null);
 __decorate([
     (0, common_1.Get)(':id'),
     __param(0, (0, common_1.Param)('id')),

@@ -3,7 +3,7 @@ import { TokensService } from './tokens.service';
 export declare class InternalTokensController {
     private readonly tokensService;
     constructor(tokensService: TokensService);
-    create(dto: CreateTokenDto): import("@prisma/client").Prisma.Prisma__TokenClient<{
+    create(dto: CreateTokenDto): Promise<{
         symbol: string;
         chain: string;
         riskLevel: import("@prisma/client").$Enums.RiskLevel;
@@ -16,5 +16,5 @@ export declare class InternalTokensController {
         id: string;
         createdAt: Date;
         updatedAt: Date;
-    }, never, import("@prisma/client/runtime/library").DefaultArgs>;
+    }>;
 }
